@@ -55,4 +55,34 @@ The validation is done inside the `Builder.validate()` method before the Course 
 
 **Online Lab:** If a course is online, it cannot require a physical laboratory (requiresLab == false).
 
-These validation rules make sure that the created `Course` object follows the requirements of the university course domain.
+## Part D - Preset Configurations
+
+The `CourseDirector` class was created to make it easier to create courses with common configurations. It stores the main steps for creating different types of courses, so the same Builder code does not have to be repeated in different parts of the program.
+
+#### **Implemented Presets:**
+**1.SAFE Course (constructSafeCourse)**
+
+**Purpose:** Used for a basic introductory course.
+
+**Configuration:** The course has 3 credits, a default capacity of 30 students, and the standard grading policy.
+
+**2.ADVANCED Course (constructAdvancedCourse)**
+
+**Purpose:** Used for a more difficult and specialized course.
+
+**Configuration:** The course has 5 credits, is marked as advanced, requires a physical lab, has a prerequisite, and has a maximum capacity of 20 students.
+
+**3.ONLINE Course (constructOnlineCourse)**
+
+**Purpose:** Used for courses that are taught online.
+
+**Configuration:** The course has 3 credits, is delivered online, allows up to 100 students, and does not require a physical lab.
+
+**Why Use CourseDirector?**
+
+**DRY Principle:**
+It helps avoid repeating the same Builder code when creating common course types.
+
+**Separation of Concerns:**
+The client does not need to know all the steps required to create a specific course. It can simply ask the CourseDirector to create one of the available presets.
+
