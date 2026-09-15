@@ -19,7 +19,6 @@ public class Course {
     private final String gradingPolicy;
     private final List<String> prerequisites;
 
-    // Приватный конструктор, который принимает сам Builder
     private Course(Builder builder) {
         this.courseCode = builder.courseCode;
         this.courseName = builder.courseName;
