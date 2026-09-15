@@ -86,3 +86,127 @@ It helps avoid repeating the same Builder code when creating common course types
 **Separation of Concerns:**
 The client does not need to know all the steps required to create a specific course. It can simply ask the CourseDirector to create one of the available presets.
 
+## Part E - Clean Code: Before  --> After
+
+### Fragment 1: Avoiding Flag Arguments
+**BEFORE**
+```
+public void setOnline(boolean isOnline) {
+    this.isOnline = isOnline;
+}
+```
+**AFTER**
+```
+public Builder deliverOnline(){
+    this.isOnline = true;
+    return this;
+}
+```
+
+**1. What was wrong?**
+
+The original code used boolean values like true and false in setter methods. For example, `setOnline(true)` does not clearly show what the method is supposed to do.
+
+**2. Which Clean Code principle did you apply?**
+
+Avoid Flag Arguments
+
+**3. Why is the new implementation better?**
+Replacing flag arguments with dedicated, intent-revealing methods makes the API self-explanatory, chainable, and clean at the call site.
+
+
+### Fragment 2: Small Functions and Clear Error Handling
+
+**BEFORE**
+
+```
+public Course build() {
+    if (courseCode == null || courseCode.isBlank()) {
+        throw new IllegalStateException("Course code can not be empty");
+    }
+    if (credits <= 0) {
+        throw new IllegalStateException("Credits must have greater than 0");
+    }
+    // ...
+    return new Course(this);
+}
+```
+
+**AFTER**
+
+```
+private void validate(){
+    if (courseCode == null || courseCode.isBlank()){
+        throw new IllegalStateException("Course code can not be empty");
+        }
+    if (credits <= 0){
+        throw new IllegalStateException("Credits must have greater than 0");
+        }
+    if (professor == null){
+        throw new IllegalStateException("Course must have an assigned professor");
+        }
+    if (isAdvanced){
+        if (credits < 5){
+            throw new IllegalStateException("Advanced courses must carry at least 5 credits");
+            }
+        if (prerequisites.isEmpty()){
+            throw new IllegalStateException("Advanced courses must have at least one prerequisite");
+            }
+        }
+
+    if (isOnline && requiresLab){
+        throw new IllegalStateException("Online courses cannot require physical lab space");
+        }
+    }
+```
+
+**1. What was wrong?**
+
+The build() method was doing too much. It was checking all the validation rules and creating the Course object at the same time.
+
+**2. Which Clean Code principle did you apply?**
+
+Small Functions and One Level of Abstraction per Function
+
+**3. Why is the new implementation better?**
+
+Now, build() has a simple purpose: it first calls validate() and then creates the Course. The detailed validation is handled separately inside the validate() method. This makes the code easier to understand and maintain.
+
+
+### Fragment 3: Encapsulation and Defensive Copying
+**BEFORE**
+
+```
+public Course(..., List<String> prerequisites) {
+    // ...
+    this.prerequisites = prerequisites;
+}
+
+public List<String> getPrerequisites() {
+    return prerequisites;
+}
+```
+
+**AFTER**
+
+```
+private Course(Builder builder) {
+    // ...
+    this.prerequisites = new ArrayList<>(builder.prerequisites);
+}
+
+public List<String> getPrerequisites() {
+    return Collections.unmodifiableList(prerequisites);
+}
+```
+**1. What was wrong?**
+
+The original code directly used external lists. This meant that the list could be changed from outside after the Course was created. This could unexpectedly change the course data.
+
+**2. Which Clean Code principle did you apply?**
+
+Encapsulation and Avoiding Hidden Side Effects
+
+**3. Why is the new implementation better?**
+
+The new implementation creates a copy of the list using new ArrayList<>(...). The list is also made unmodifiable with Collections.unmodifiableList(...). This protects the course data and keeps the Course object immutable.
