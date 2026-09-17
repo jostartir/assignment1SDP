@@ -55,7 +55,7 @@ The validation is done inside the `Builder.validate()` method before the Course 
 
 **Online Lab:** If a course is online, it cannot require a physical laboratory (requiresLab == false).
 
-## Part D - Preset Configurations
+## 5. Part D - Preset Configurations
 
 The `CourseDirector` class was created to make it easier to create courses with common configurations. It stores the main steps for creating different types of courses, so the same Builder code does not have to be repeated in different parts of the program.
 
@@ -86,7 +86,7 @@ It helps avoid repeating the same Builder code when creating common course types
 **Separation of Concerns:**
 The client does not need to know all the steps required to create a specific course. It can simply ask the CourseDirector to create one of the available presets.
 
-## Part E - Clean Code: Before  --> After
+## 6. Part E - Clean Code: Before  --> After
 
 ### Fragment 1: Avoiding Flag Arguments
 **BEFORE**
@@ -210,3 +210,51 @@ Encapsulation and Avoiding Hidden Side Effects
 **3. Why is the new implementation better?**
 
 The new implementation creates a copy of the list using new ArrayList<>(...). The list is also made unmodifiable with Collections.unmodifiableList(...). This protects the course data and keeps the Course object immutable.
+
+## 7. Part F - Design Decision
+
+**Decision:** I decided to put the main validation logic in the Builder validate() method. It checks things like advanced courses having prerequisites and at least 5 credits, and online courses not requiring physical labs. The validation is done before the Course object is created.
+
+**Alternative:** Another option was to put the validation in the Course constructor, use setter methods, or create a separate validator class.
+
+**Reasoning:** I chose the Builder because it prevents invalid Course objects from being created. This follows the Fail-Fast principle. It also keeps the Course class simpler because the Builder handles the construction and validation rules.
+
+## 8. Part G - UML Diagram
+
+![umldiagrammm.png](umldiagrammm.png)
+
+| Builder Role | Your Class | Responsibility |
+| ------- | ------- | ------- |
+| Product | university.model.Course | Represents the course object that is being created.It stores the final course information and provides getters to access the data. |
+| Builder | university.model.Course.Builder | Builds the Course object step by step, sets default values, and checks that the course data is valid using the validate() method. |
+| Client | university.Main | Starts the course creation process by using CourseDirector or Course.Builder to create Course objects. |
+| Director | university.director.CourseDirector | Contains predefined methods for creating different types of courses using Course.Builder, such as safe, advanced, and online courses. |
+
+
+## 9. Part H - Automated Testing
+
+The implementation was tested with 10 tests. The tests check the main construction cases, boundary values, validation rules, and object immutability:
+
+1.`testValidBasicConstruction`: Checks that a basic course is created correctly with the default values.
+
+2.`testValidAdvancedCourseConstruction`: Checks that an advanced course can be created with lab requirements and prerequisite courses.
+
+3.`testValidOnlineCourseConstruction`: Checks that an online course can be created with a custom number of students.
+
+4.`testInvalidBlankCourseCode`: Checks that an IllegalStateException is thrown when the course code is empty or null.
+
+5.`testInvalidAdvancedCourseCredits`: Checks that an exception is thrown when an advanced course has less than 5 credits.
+
+6.`testAdvancedCourseWithoutPrerequisites`: Checks that an advanced course has at least one prerequisite.
+
+7.`testBoundaryZeroOrNegativeCredits`: Checks that 0 or less than 0 credits are not allowed.
+
+8.`testBoundaryMinimumCreditsForAdvanced`: Checks that an advanced course with exactly 5 credits passes validation successfully.
+
+9.`testConstraintOnlineCourseWithLab`: Checks that online courses cannot require a physical lab.
+
+10.`testBuilderReuseIndependence`:Checks that the builder can be reused and that changing it after build() does not affect already created Course objects.
+
+
+
+
