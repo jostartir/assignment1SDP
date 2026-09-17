@@ -258,3 +258,17 @@ The implementation was tested with 10 tests. The tests check the main constructi
 
 
 
+## Sample Program Output
+
+Course{
+code = CS-301, name = Software Design Patterns
+credits = 5, professor = Computer Science Dr. Smith
+maximum students = 30, is advanced? true
+is online? false, is required lab? true
+grading policy = Standart 100-point scale
+prerequisites = [CS-101 OOP] }
+
+## GitHub repository link
+
+https://github.com/jostartir/assignment1SDP
+
