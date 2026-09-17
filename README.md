@@ -48,15 +48,15 @@ Execute `CourseBuilderTest.java` in the location `test/university/CourseBuilderT
 
 The `CourseBuilderTest.java` file contains 10 tests that check the main parts of the project:
 
-Valid Construction (3 tests): Checks that basic, advanced, and online courses are created correctly.
+**Valid Construction (3 tests)**: Checks that basic, advanced, and online courses are created correctly.
 
-Invalid Construction (3 tests): Checks that errors are thrown for an empty course code, too few credits for an advanced course, and missing prerequisites.
+**Invalid Construction (3 tests)**: Checks that errors are thrown for an empty course code, too few credits for an advanced course, and missing prerequisites.
 
-Boundary Cases (2 tests): Checks that zero or negative credits are rejected and that 5 credits are accepted for an advanced course.
+**Boundary Cases (2 tests)**: Checks that zero or negative credits are rejected and that 5 credits are accepted for an advanced course.
 
-Individual Constraint (1 test): Checks that an online course cannot require a physical lab.
+**Individual Constraint (1 test)**: Checks that an online course cannot require a physical lab.
 
-Builder Reuse (1 test): Checks that changing the builder after build() does not affect courses that were already created.
+**Builder Reuse (1 test)**: Checks that changing the builder after build() does not affect courses that were already created.
 
 
 ## UML Diagram
